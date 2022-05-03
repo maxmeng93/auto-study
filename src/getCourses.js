@@ -1,6 +1,3 @@
-// 课程列表
-// https://lms.ouchn.cn/user/courses#/
-
 const baseURL = 'https://lms.ouchn.cn'
 
 const getCourses = async (page) => {

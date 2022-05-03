@@ -35,7 +35,6 @@ const getCourseDetail = async (page, course) => {
     const type = await list[i].$eval('.font', el => el.getAttribute('title'));
     const title = await list[i].$eval('.activity-title > a.title', el => el.textContent);
 
-    // https://lms.ouchn.cn/course/50000000143/learning-activity/full-screen#/50000020596
     const href = `${baseURL}/course/${id}/learning-activity/full-screen#/${itemId}`;
     const { status, statusStr } = await list[i].$eval('.activity-operations-container > .completeness', el => {
       return {
