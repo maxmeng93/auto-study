@@ -1,0 +1,17 @@
+{
+  "name": "auto-course",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "fs-extra": "^10.1.0",
+    "puppeteer": "^13.7.0",
+    "puppeteer-extra": "^3.2.3",
+    "puppeteer-extra-plugin-flash": "^2.3.0",
+    "puppeteer-extra-plugin-user-preferences": "^2.3.1"
+  }
+}
