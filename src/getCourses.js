@@ -1,8 +1,11 @@
-const baseURL = 'https://lms.ouchn.cn'
+const config = require('../config');
+
+const { baseURL } = config;
 
 const getCourses = async (page) => {
 
   const url = `${baseURL}/user/courses#/`
+
   await page.goto(url, {
     waitUntil: 'networkidle2' // 网络空闲说明加载完毕
   });

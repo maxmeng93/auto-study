@@ -1,7 +1,6 @@
-const puppeteer = require('puppeteer');
-const fse = require('fs-extra');
+const config = require('../config');
 
-const baseURL = 'https://lms.ouchn.cn'
+const { baseURL } = config;
 
 const getCourseDetail = async (page, course) => {
 

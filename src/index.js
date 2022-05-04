@@ -4,11 +4,14 @@ const dotenv = require('dotenv');
 const getCourses = require('./getCourses');
 const getCourseDetail = require('./getCourseDetail');
 const study = require('./study');
+const config = require('../config');
+
+const { executablePath, userAgent } = config;
 
 dotenv.config();
 
 (async () => {
-  const baseURL = 'https://lms.ouchn.cn';
+  const { baseURL } = config
 
   const { SESSION } = process.env;
   if (!SESSION) {
@@ -18,15 +21,16 @@ dotenv.config();
 
   const browser = await puppeteer.launch({
     headless: false,
+    executablePath,
     defaultViewport: {
       width: 1200,
       height: 900
     },
-    // 本地chrome
-    executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
   });
 
   const page = await browser.newPage();
+
+  await page.setDefaultTimeout(60 * 1000);
 
   await page.setCookie({
     url: baseURL,
@@ -34,14 +38,14 @@ dotenv.config();
     value: SESSION,
   });
 
-  await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36')
+  await page.setUserAgent(userAgent);
 
   const courses = await getCourses(page);
 
   const newData = []
 
   for (let i = 0; i < courses.length; i++) {
-    if (i === 0) await newData.push(await getCourseDetail(page, courses[i]));
+    await newData.push(await getCourseDetail(page, courses[i]));
   }
 
   await fse.writeFile('./data.json', JSON.stringify(newData, undefined, 2));
@@ -50,3 +54,7 @@ dotenv.config();
 
   await browser.close();
 })();
+
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+});
