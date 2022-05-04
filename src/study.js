@@ -34,8 +34,11 @@ const studyOnlineVideo = async (page) => {
 
   await page.evaluate(async (videoConfig) => {
     return new Promise((resolve) => {
-      console.log('.', videoConfig);
-      // const { video: videoConfig } = config;
+      const timer = setTimeout(() => {
+        clearTimeout(timer);
+        resolve()
+      }, 10 * 1000);
+
       const { playbackRate = 1, muted = false, volume = 0.5 } = videoConfig;
 
       const video = document.querySelector('video');
@@ -47,10 +50,15 @@ const studyOnlineVideo = async (page) => {
       video.volume = volume;
 
       video.addEventListener('ended', () => {
+        clearTimeout(timer);
         resolve();
       })
       video.addEventListener('error', () => {
+        clearTimeout(timer);
         resolve();
+      })
+      video.addEventListener('play', () => {
+        clearTimeout(timer);
       })
     })
   }, videoConfig);

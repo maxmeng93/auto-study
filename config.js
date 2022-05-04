@@ -4,11 +4,11 @@ const config = {
   // 视频
   video: {
     // 倍速播放，最大16
-    playbackRate: 8,
+    playbackRate: 4,
     // 是否静音
     muted: false,
-    // 音量（0.0 - 1.0）
-    volume: 0.1,
+    // 音量（0 - 1）
+    volume: 0.01,
   },
   // 学习类型
   // studyTypes: ['页面', '参考资料', '音视频教材'],

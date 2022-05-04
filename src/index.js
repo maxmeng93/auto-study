@@ -1,8 +1,7 @@
 const puppeteer = require('puppeteer');
 const fse = require('fs-extra');
 const dotenv = require('dotenv');
-const getCourses = require('./getCourses');
-const getCourseDetail = require('./getCourseDetail');
+const getData = require('./getData');
 const study = require('./study');
 const config = require('../config');
 
@@ -28,6 +27,11 @@ dotenv.config();
     },
   });
 
+  setTimeout(async () => {
+    await getData(page);
+    await browser.close();
+  }, 60 * 60 * 1000);
+
   const page = await browser.newPage();
 
   await page.setDefaultTimeout(60 * 1000);
@@ -40,17 +44,18 @@ dotenv.config();
 
   await page.setUserAgent(userAgent);
 
-  const courses = await getCourses(page);
-
-  const newData = []
-
-  for (let i = 0; i < courses.length; i++) {
-    await newData.push(await getCourseDetail(page, courses[i]));
+  let newData = [];
+  try {
+    const data = await fse.readFile('./data.json');
+    newData = JSON.parse(data.toString());
+  } catch (err) {
+    newData = await getData(page);
   }
 
-  await fse.writeFile('./data.json', JSON.stringify(newData, undefined, 2));
-
   await study(page, newData);
+
+  // 获取最新进度
+  await getData(page);
 
   await browser.close();
 })();
