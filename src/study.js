@@ -24,44 +24,73 @@ const studyMaterial = async (page) => {
   }
 }
 
+// 视频或视频
+const playVideoOrAudio = async (page, tag = 'video') => {
+
+  let playBtn = null;
+
+  if (tag === 'video') {
+    playBtn = await page.waitForSelector('.mvp-toggle-play.mvp-first-btn-margin');
+  } else {
+    playBtn = await page.waitForSelector('.audio-player-wrapper > .play > a')
+  }
+
+  playBtn.click();
+
+  await page.evaluate(async (videoConfig, tag) => {
+    return new Promise((resolve) => {
+
+      const { playbackRate = 1, muted = false, volume = 0.5 } = videoConfig;
+
+      const ele = document.querySelector(tag);
+
+      // 当前播放进度
+      let currentTime = ele.currentTime;
+      console.log('currentTime', currentTime);
+      // 倍速播放
+      ele.playbackRate = playbackRate;
+      // 是否静音
+      ele.muted = muted;
+      // 音量（0.0 - 1.0）
+      ele.volume = volume;
+
+      const timer = setTimeout(() => {
+        const current = ele.currentTime;
+        if (current === currentTime) {
+          resolve()
+        }
+      }, 10 * 1000);
+
+      ele.addEventListener('ended', () => {
+        clearTimeout(timer);
+        resolve();
+      })
+      ele.addEventListener('error', () => {
+        clearTimeout(timer);
+        resolve();
+      })
+      ele.addEventListener('play', () => {
+        currentTime = ele.currentTime;
+      })
+    })
+  }, videoConfig, tag);
+}
+
 // 音视频教材
 const studyOnlineVideo = async (page) => {
 
   await page.waitForTimeout(Math.floor(Math.random() * 1000 + 3000));
 
-  const playBtn = await page.waitForSelector('.mvp-toggle-play.mvp-first-btn-margin');
-  playBtn.click();
+  const video = await page.$('video');
+  const audio = await page.$('audio');
 
-  await page.evaluate(async (videoConfig) => {
-    return new Promise((resolve) => {
-      const timer = setTimeout(() => {
-        clearTimeout(timer);
-        resolve()
-      }, 10 * 1000);
+  if (video) {
+    await playVideoOrAudio(page, 'video');
+  }
 
-      const { playbackRate = 1, muted = false, volume = 0.5 } = videoConfig;
-
-      const video = document.querySelector('video');
-      // 倍速播放
-      video.playbackRate = playbackRate;
-      // 是否静音
-      video.muted = muted;
-      // 音量（0.0 - 1.0）
-      video.volume = volume;
-
-      video.addEventListener('ended', () => {
-        clearTimeout(timer);
-        resolve();
-      })
-      video.addEventListener('error', () => {
-        clearTimeout(timer);
-        resolve();
-      })
-      video.addEventListener('play', () => {
-        clearTimeout(timer);
-      })
-    })
-  }, videoConfig);
+  if (audio) {
+    await playVideoOrAudio(page, 'audio');
+  }
 }
 
 const study = async (page, courses) => {
