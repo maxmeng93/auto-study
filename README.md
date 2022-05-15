@@ -29,3 +29,14 @@ yarn start
 ## 注意
 
 - 视频播放必须配置本机 chrome 浏览器，否则无法播放。
+
+## 其他
+
+<!-- <div style="text-align: center;">
+  <img src="./images/pay.jpeg" style="width: 300px;">
+</div> -->
+
+<figure style="text-align: center;">
+  <figcaption>如果这个项目对你有用，可以请我喝杯☕️</figcaption>
+  <img  src="./images/pay.jpeg" style="width: 300px;" />
+</figure>
