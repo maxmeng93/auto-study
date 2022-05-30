@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const fse = require('fs-extra');
 const dotenv = require('dotenv');
 const getData = require('./getData');
@@ -48,6 +48,7 @@ dotenv.config();
   try {
     const data = await fse.readFile('./data.json');
     newData = JSON.parse(data.toString());
+    console.log('使用 data.json 缓存');
   } catch (err) {
     newData = await getData(page);
   }

@@ -11,8 +11,8 @@ const config = {
     volume: 0.01,
   },
   // 学习类型
-  // studyTypes: ['页面', '参考资料', '音视频教材'],
-  studyTypes: ['音视频教材'],
+  studyTypes: ['页面', '参考资料', '音视频教材'],
+  // studyTypes: ['音视频教材'],
   // 本机 Chrome 浏览器，自动学习视频类课程必须配置这个参数，否则视频无法播放
   // executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
   executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',

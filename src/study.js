@@ -94,6 +94,7 @@ const studyOnlineVideo = async (page) => {
 }
 
 const study = async (page, courses) => {
+  console.log('study...')
 
   for (let i = 0; i < courses.length; i++) {
     const { children } = courses[i];

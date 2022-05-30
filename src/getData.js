@@ -3,6 +3,8 @@ const getCourses = require('./getCourses');
 const getCourseDetail = require('./getCourseDetail');
 
 const getData = async (page) => {
+  console.log('开始获取课程数据...');
+
   const courses = await getCourses(page);
 
   const newData = []
@@ -12,6 +14,8 @@ const getData = async (page) => {
   }
 
   await fse.writeFile('./data.json', JSON.stringify(newData, undefined, 2));
+
+  console.log('data.json save success');
 
   return newData;
 }
